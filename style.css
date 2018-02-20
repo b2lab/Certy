@@ -1,0 +1,330 @@
+/* =============================================================================
+   HTML5 CSS Reset Minified - Eric Meyer
+   ========================================================================== */
+
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}
+body{line-height:1}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+nav ul{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:none}
+a{margin:0;padding:0;font-size:100%;vertical-align:baseline;background:transparent;text-decoration:none}
+mark{background-color:#ff9;color:#000;font-style:italic;font-weight:bold}
+del{text-decoration:line-through}
+abbr[title],dfn[title]{border-bottom:1px dotted;cursor:help}
+table{border-collapse:collapse;border-spacing:0}
+hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
+input,select{vertical-align:middle}
+li{list-style:none}
+
+
+/* =============================================================================
+   My CSS
+   ========================================================================== */
+
+/* ---- base ---- */
+
+html,body{ 
+	width:100%;
+	height:100%;
+	background:#2e3250;
+}
+
+html{
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body{
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
+  font-size: 16px;
+}
+
+canvas{
+  display:block;
+  vertical-align:bottom;
+}
+
+
+
+/* ---- particles.js container ---- */
+
+#particles-js{
+  width: 100%;
+  height: 100%;
+  background-color: #2e3250;
+  
+
+}
+.btext{
+	color: #ffffff;
+	position: absolute;
+	text-align: center;	
+	width: 100%;
+	
+}
+
+.ctext{
+	
+	color: #ffffff;
+	position: float;
+	text-align: center;
+	top: 10%;
+	width: 100%;
+	
+	
+}
+.dtext{
+	color: #ffffff;
+	position: float;
+	text-align: center;
+	top: 10%;
+	width: 100%;
+	
+	
+}
+#title{
+	font-size:42px;
+	
+}
+
+.image-upload{
+	height:70px;
+}
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    height: 30px;
+	width: 30px;
+	margin-right: 20px;
+    cursor: pointer;
+	margin-top: 20px;
+}
+
+#result{
+	overflow-y: scroll;
+	height: 800px;
+}
+#panel{
+	margin-top: -45px;
+	width: 57%;
+	position: left;
+	text-align: right;
+}
+#head{
+	font-size: 14px;
+	height: 100%;
+	width: 300px;
+	padding-left: 1000px;
+	margin-top: 30px;
+	margin-left: 50px;
+	position:absolute;
+}
+
+#divgit{
+	height: 100%;
+	width: 300px;
+	text-align:left;
+	position:absolute;
+	
+}
+
+#git{
+	position:absolute;
+	margin-top:30px;
+	margin-left: 30px;
+}
+#b2l{
+	padding-bottom:30px;
+}
+
+/******* css input ****/
+
+
+#namer {
+ position: relative; 
+ height: 50px; 
+ margin: 50px auto 0;
+ text-align: right;
+}
+#namer2 {
+ position: relative; 
+ height: 50px;
+ text-align: right;
+ margin-bottom:30px;
+}
+
+#namer input {
+ border: 0;
+ width: 220px;
+ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
+  font-size: 18px;
+ line-height: 35px;
+ height: 40px;
+ text-align: right;
+ padding: 30px;
+ background: transparent;
+ color: #fff;
+}
+#namer2 input {
+ border: 0;
+ width: 450px;
+ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
+  font-size: 18px;
+ line-height: 35px;
+ height: 40px;
+ text-align: right;
+ padding: 30px;
+
+ background: transparent;
+ color: #fff;
+}
+
+#empty{
+	height:15px;
+}
+
+
+
+#namer input::placeholder {
+ color: #e7e7e7;
+ text-align: right;
+ 
+}
+
+#resultbox{
+	width:90%;
+	height: 100%;
+	
+}
+
+
+#immloader{
+	padding-top:30px;
+	visibility: hidden;
+}
+
+#botton4{
+	height: 10px;
+	width: 150;
+	line-height: 8px;
+	font-size: 14px;
+	border-radius: 45px;
+	background: #107dac;
+	border-color: #107dac;
+}
+
+
+/******* bar  ***/
+
+
+/******/
+
+
+
+/***************/
+
+/* ------------------------------------------
+ * CSS3 GITHUB BUTTONS (Nicolas Gallagher)
+ * Licensed under Unlicense
+ * http://github.com/necolas/css3-github-buttons
+ * --------------------------------------- */
+
+
+/* =============================================================================
+   Base Button
+   ========================================================================== */
+
+.button {
+    position: relative;
+    overflow: visible;
+    display: inline-block;
+    padding: 0.5em 1em;
+    border: 1px solid #146712;
+    margin: 0;
+    text-decoration: none;
+    text-align: center;
+    //text-shadow: 1px 1px 0 #fff;
+    font:11px/normal sans-serif;
+    color: #fff;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    background-color: #28ab47;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#28ab47), to(#269140));
+    background-image: -moz-linear-gradient(#28ab47, #269140);
+    background-image: -ms-linear-gradient(#28ab47, #269140);
+    background-image: -o-linear-gradient(#28ab47, #269140);
+    background-image: linear-gradient(#28ab47, #269140);
+    -moz-background-clip: padding; /* for Firefox 3.6 */
+    background-clip: padding-box;
+    border-radius: 0.2em;
+    /* IE hacks */
+    zoom: 1;
+    *display: inline;
+}
+
+.button:hover,
+
+.button:active,
+.button.active {
+    border-color: #3072b3;
+    border-bottom-color: #3072b3;
+    text-decoration: none;
+    //text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+    color: #fff;
+    background-color: #28ab47;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#27a043), to(#27a043));
+    background-image: -moz-linear-gradient(#27a043, #27a043);
+    background-image: -o-linear-gradient(#27a043, #27a043);
+    background-image: linear-gradient(#27a043, #27a043);
+}
+
+.button:active,
+.button.active {
+    border-color: #2a65a0;
+    border-bottom-color: #2a65a0;
+    background-color: #269140;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#269140), to(#269140));
+    background-image: -moz-linear-gradient(#269140, #269140);
+    background-image: -ms-linear-gradient(#269140, #269140);
+    background-image: -o-linear-gradient(#269140, #269140);
+    background-image: linear-gradient(#269140, #269140);
+}
+
+/* overrides extra padding on button elements in Firefox */
+.button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+
+/* =============================================================================
+   Button icons
+   ========================================================================== */
+
+.button.icon:before {
+    content: "";
+    position: relative;
+    top: 1px;
+    float:left;
+    width: 12px;
+    height: 12px;
+    margin: 0 0.75em 0 -0.25em;
+    background: url(gh-icons.png) 0 99px no-repeat;
+}
+
+.button.big {
+    font-size: 18px;
+	width: 150px;
+	
+}
+
+.button.big.icon:before {
+    top: 0;
+}
+

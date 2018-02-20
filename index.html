@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<title>Certy</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" media="screen" href="style.css">
+	</head>
+	
+	<body>
+		<div id="particles-js">
+			<div class="btext">
+				<div id="divgit">
+					<a href="https://github.com/b2lab/Certy"><img id="git" src="github.png" width="40" height="40"></a>
+					<div id="head">
+						&nbsp &nbsp &nbsp &nbsp &nbsp Created with <img src="heart.png" width="15" height="15"> by  &nbsp <img src="b2lab.png" width="96" height="20">
+					</div>
+				</div>
+				<br><br><br><br><br><br>
+				<h1 id="title">Certy</h1><br>
+				<p>Certify your Digital Contents on the Ethereum Blockchain</p>
+				<img id="immloader" src="loader.gif" width="64" height="64">
+				<div id="panel">
+					<div id="namer">
+						<input type="text" id="txt" placeholder="insert your Memo" maxlength="20"><a id="botton1" onclick="certify()" class="button big">Certify Content</a><br>
+					</div>
+					<div class="ctext">
+						<label id="resultbox3"></label>
+					</div>
+					<br>
+					<div id="namer2">
+						<input type="text" id="txt2" placeholder="insert Certifier" maxlength="42" title="require 42 characters">
+						<a id="botton2" onclick="check()" class="button big">Check Content</a>
+					</div>
+					<div class="dtext">
+						<label id="resultbox2"></label>
+					</div>
+					<div id="empty">
+					</div>
+					<a id="botton3" href="#" onclick="list()" class="button big">Content List</a><br><br>
+				</div>
+				<br><br>
+				<center>
+					<label id="resultbox"></label>
+				</center>
+			</div>
+		</div>
+		
+		<script src="particles.js"></script>
+		<script src="app.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+		
+		<script>
+		
+			function timeConverter(UNIX_timestamp){
+				var a = new Date(UNIX_timestamp * 1000);
+				var utc = new Date(a.valueOf() + a.getTimezoneOffset() * 60000);
+				var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+				var year = utc.getFullYear();
+				var month = months[utc.getMonth()];
+				var date = utc.getDate();
+				var hour = utc.getHours();
+				var min = utc.getMinutes();
+				var sec = utc.getSeconds();
+				if(sec<10)
+					sec = "0"+sec;
+				if(min<10)
+					min = "0"+min;
+				if(hour<10)
+					hour = "0"+hour;
+				if(date<10)
+					date = "0"+date;
+				var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;			  
+				return time;
+			}
+			
+			function generaPDF(address,timestamp,fingerprint,memo,txhash){
+				var doc = new jsPDF()
+				doc.setFontSize(30);
+				doc.setFont('Times New Roman','bold')
+				doc.text("Certy", 90, 30)
+				doc.setFont('Times New Roman','normal')
+				doc.setFontSize(15);
+				doc.text("Certify your Digital Contents on the Ethereum Blockchain", 40, 40)
+				doc.setFont('Times New Roman','bold')
+				doc.text("Blockchain Digital Certificate", 15, 70+25)
+				doc.setFont('Times New Roman','normal')
+				doc.setFontSize(13);
+				doc.text('This is to certify that the digital content referred hereunder existed and was presented', 15, 80+25)
+				doc.text('in the date and time printed down below on the Ethereum Blockchain by the person', 15, 87+25)
+				doc.text('identified as "Certifier".', 15, 94+25)
+				doc.text('Certifier (Wallet): ', 15, 110+25)
+				doc.text('Fingerprint: ', 15, 117+25)
+				doc.text('Timestamp: ', 15, 124+25)
+				doc.text('Memo: ', 15, 131+25)
+				doc.text('TxHash: ', 15, 138+25)
+				doc.text(address, 50, 110+25)
+				doc.text(fingerprint.substring(2), 50, 117+25)
+				doc.text(timeConverter(timestamp)+' GMT +0', 50, 124+25)
+				doc.text(memo, 50, 131+25)
+				doc.text(txhash, 50, 138+25)
+				doc.setFontSize(10);
+				doc.text("Certy - Certify your Digital Contents on the Ethereum Blockchain 1.0 @2018", 50, 280)
+				doc.save('Certy_Certificate_'+fingerprint.substring(2)+'.pdf')
+			}								
+
+			function setAllert(){
+				alert("Please login your Metamask Account and refresh the page")
+			}
+			
+			function install(){
+				if (window.confirm('No web3? You should consider trying MetaMask!  Click "ok" to proceed')){
+					window.open('https://metamask.io','_blank');
+				}
+			}
+
+			if (typeof web3 !== 'undefined') {
+				web3.eth.getAccounts(function(err,result){
+					if(result.length == 0){	
+						alert("Please login your Metamask Account in Ethereum Main Network and refresh the page")			
+						document.getElementById("botton1").onclick = setAllert; 
+						document.getElementById("botton2").onclick = setAllert; 
+						document.getElementById("botton3").onclick = setAllert;
+					}
+				})
+			}else{		  
+				if (window.confirm('No web3? You should consider trying MetaMask!  Click "ok" to proceed')){
+					window.open('https://metamask.io','_blank');		 
+					document.getElementById("botton1").onclick = install; 
+					document.getElementById("botton2").onclick = install; 
+					document.getElementById("botton3").onclick = install;
+				}
+			}
+		
+			var addr = "0x193c1a4e8773c01c9ce7b4439c455f1a6a3cbfbb";	//Main Net Contract
+			
+			var MyContract = web3.eth.contract([{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"uint256"}],"name":"mapHash","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"nDoc","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"bytes32"}],"name":"main_db","outputs":[{"name":"isCertify","type":"bool"},{"name":"timestamp","type":"uint256"},{"name":"mnemonic","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_hash","type":"bytes32"},{"name":"_mnemonic","type":"bytes32"}],"name":"addHash","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"fee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"certifier","type":"address"},{"indexed":false,"name":"risposta","type":"bytes32"}],"name":"Answers","type":"event"}]);
+			var contractInstance = MyContract.at(addr);
+		
+			function isValid(str){ 
+				return /^\w+$/.test(str); 
+			}
+
+			function addh(hash){
+				var memo = document.getElementById("txt").value;
+				document.getElementById("resultbox").innerHTML="";
+				contractInstance.fee(function(err,fee){
+					contractInstance.addHash(hash,memo,{value: fee},function(err,result){
+						if(!err){				
+							document.getElementById("botton2").onclick = ""; 
+							document.getElementById("botton2").style.opacity = "0.5"; 
+							document.getElementById("botton3").onclick = "";
+							document.getElementById("botton3").style.opacity = "0.5"; 				
+							document.getElementById("immloader").style.visibility = "visible";				
+							var tx = result;
+							var add = web3.eth.coinbase;
+							var evento = contractInstance.Answers({"certifier": add});
+							evento.watch(function(errore, result2){					
+								evento.stopWatching();
+								if(!errore){
+									if(result2.args.risposta == "0x4b4f000000000000000000000000000000000000000000000000000000000000")
+										document.getElementById("resultbox").innerHTML="Sorry, amount must be at least 0.001 Ether";	
+									if(result2.args.risposta == "0x4f4b000000000000000000000000000000000000000000000000000000000000"){
+										web3.eth.getTransaction(tx,function(err2,result3){					
+											var blocco = result3["blockNumber"];
+											setTimeout(function(){
+												web3.eth.getBlock(blocco,function(err3,result4){
+													var timestampCerty = result4["timestamp"];
+													var add = web3.eth.coinbase
+													document.getElementById("resultbox").innerHTML="Congratulation, your Content is Certified on the Blockchain. <br><br>Fingerprint: "+hash.substring(2)+"<br>Memo: "+String(memo)+"<br>Tx Hash: "+tx+"<br>Timestamp: "+timeConverter(timestampCerty)+" GMT +0<br><br><a id='botton4'  onclick='generaPDF(\""+add+"\",\""+timestampCerty+"\",\""+hash+"\",\""+String(memo)+"\",\""+tx+"\")' class='button big'>Download Certificate</a>";		
+										
+												});							
+											}, 3000);
+										})
+									}
+									if(result2.args.risposta == "0x416c726561647943657274696669656400000000000000000000000000000000")
+										document.getElementById("resultbox").innerHTML="Sorry, your File is already Certified";	
+									evento = "";
+									document.getElementById("botton1").onclick = certify; 
+									document.getElementById("botton2").onclick = check; 
+									document.getElementById("botton3").onclick = list;
+									document.getElementById("botton2").style.opacity = "1"; 
+									document.getElementById("botton3").style.opacity = "1"; 
+									document.getElementById("txt").value = "";
+									document.getElementById("immloader").style.visibility = "hidden";
+								}
+							});
+						}else{
+							document.getElementById("botton1").onclick = certify;
+							document.getElementById("botton2").onclick = check; 
+							document.getElementById("botton3").onclick = list;
+							document.getElementById("botton2").style.opacity = "1"; 
+							document.getElementById("botton3").style.opacity = "1"; 
+						}
+					});
+				})		 
+			}
+
+			function certify(){
+				document.getElementById("txt2").value = "";
+				document.getElementById("resultbox").innerHTML="";
+				var memo = document.getElementById("txt").value
+				if(isValid(memo)){
+					if((memo>=0)&&(memo.length != 0)){
+						document.getElementById("resultbox").innerHTML="Please insert at least one letter in Memo field to certify your content";	
+					}else{
+						var input = document.createElement('input');
+						input.type = 'file';
+						input.click();
+						var tx ="";
+						input.onchange = function (){						 
+							if(this.files[0].size <= 20*1024*1024){						 
+								var reader = new FileReader();								
+								reader.onload = function(e){						
+									addh(web3.sha3(reader.result))					
+								};
+								document.getElementById("resultbox").innerHTML="Hashing...";
+								document.getElementById("botton1").onclick = ""; 
+								document.getElementById("botton2").onclick = ""; 
+								document.getElementById("botton2").style.opacity = "0.5";
+								document.getElementById("botton3").onclick = "";
+								document.getElementById("botton3").style.opacity = "0.5";	
+								reader.readAsBinaryString(this.files[0]);
+							}else{
+								document.getElementById("resultbox").innerHTML="Sorry, your content is too large. Please upload file till to 20 MB";
+							}
+						}
+					}
+				}else{
+					document.getElementById("resultbox").innerHTML="Please insert an alphanumeric string in Memo field to certify your content";
+				}
+			}
+			function check2(hashpassato){
+				document.getElementById("botton1").onclick = ""; 
+				document.getElementById("botton1").style.opacity = "0.5";
+				document.getElementById("botton2").onclick = "";
+				document.getElementById("botton3").onclick = "";
+				document.getElementById("botton3").style.opacity = "0.5";
+				document.getElementById("immloader").style.visibility = "visible";		 
+				var addressOwn = document.getElementById("txt2").value;			
+				var getDoc = function(hash,num,i){				
+					contractInstance.mapHash(addressOwn,i,function(err,res){	
+						if( hash == res ){
+							contractInstance.main_db(addressOwn,hash,function(err,ris){
+							string = "Congratulations, the File is Compliant with the Certified Original. <br><br>Fingerprint: "+hash.substring(2)+" <br>Memo: "+web3.toAscii(ris[2])+"<br> Timestamp: "+timeConverter(ris[1])+" GMT +0";	
+							document.getElementById("resultbox").innerHTML= string;	
+							document.getElementById("botton1").onclick = certify; 
+							document.getElementById("botton2").onclick = check;
+							document.getElementById("botton3").onclick = list;
+							document.getElementById("botton1").style.opacity = "1"; 
+							document.getElementById("botton3").style.opacity = "1"; 
+							document.getElementById("immloader").style.visibility = "hidden";							
+							})					
+						}
+						if((hash != res)&&(i < num)){
+							getDoc(hash,num,i+1)
+						}
+						if(i == num){
+							string = "Sorry, the File is Not Compliant with the Certified Original";
+							document.getElementById("resultbox").innerHTML= string;
+							document.getElementById("botton1").onclick = certify; 
+							document.getElementById("botton2").onclick = check;
+							document.getElementById("botton3").onclick = list;
+							document.getElementById("botton1").style.opacity = "1"; 
+							document.getElementById("botton3").style.opacity = "1"; 
+							document.getElementById("immloader").style.visibility = "hidden";
+						}
+					})
+				}
+				var getNumero = function(hash){
+					contractInstance.nDoc(addressOwn,function(err,res){
+						getDoc(hash,res,0);
+					})
+				}
+				getNumero(hashpassato);
+			}
+			function check(){
+				document.getElementById("txt").value = "";
+				document.getElementById("resultbox").innerHTML="";
+				var addOwn = document.getElementById("txt2").value;
+				if(addOwn.length == 42){
+					var iniziali = addOwn.substring(0, 2);
+					if(iniziali == "0x"){
+						var input = document.createElement('input');
+						input.type = 'file';
+						input.click();
+						var tx ="";
+						input.onchange = function (){
+							var reader = new FileReader();
+							reader.onload = function(e) {	
+								check2(web3.sha3(reader.result))
+							}
+							reader.readAsBinaryString(this.files[0]);
+						};
+					}else{
+						document.getElementById("resultbox").innerHTML="Sorry, insert \"0x\" Address prefix";
+					}
+				}else{
+					document.getElementById("resultbox").innerHTML="Sorry, insert right Address Owner lenght";
+				}
+			}
+			function list(){
+				document.getElementById("botton2").onclick = ""; 
+				document.getElementById("botton2").style.opacity = "0.5"; 
+				document.getElementById("botton3").onclick = "";
+				document.getElementById("botton1").onclick = "";
+				document.getElementById("botton1").style.opacity = "0.5"; 
+				document.getElementById("txt").value = "";
+				document.getElementById("txt2").value = "";
+				document.getElementById("resultbox").innerHTML="";
+				document.getElementById("immloader").style.visibility = "visible";
+				var getDoc = function(num,i){
+					contractInstance.mapHash(web3.eth.coinbase,i,function(err,res){	
+						var hash = res.substring(2);	
+						contractInstance.main_db(web3.eth.coinbase,res,function(err,res){
+							if(i==(num-1)){
+								document.getElementById("resultbox").innerHTML = "<hr>"+web3.toAscii(res[2])+"<br>"+timeConverter(res[1])+" GMT +0<br>Fingerprint: "+hash;
+								getDoc(num,i-1)		
+							}
+							if((i>=0)&&(i<(num-1))){
+								document.getElementById("resultbox").innerHTML = document.getElementById("resultbox").innerHTML + "<hr>"+web3.toAscii(res[2])+"<br>"+timeConverter(res[1])+" GMT +0<br>Fingerprint: "+hash;
+								getDoc(num,i-1)		
+							}
+							if(i<0){
+								document.getElementById("botton2").onclick = check; 
+								document.getElementById("botton1").onclick = certify;
+								document.getElementById("botton2").style.opacity = "1"; 
+								document.getElementById("botton1").style.opacity = "1"; 
+								document.getElementById("botton3").onclick = list;
+								document.getElementById("immloader").style.visibility = "hidden";
+							}
+						})		
+					})		
+				}
+				var getList = function(){
+					contractInstance.nDoc(web3.eth.coinbase,function(err,res){
+					if(res != 0)
+						getDoc(res,res-1);
+					else{
+						document.getElementById("resultbox").innerHTML = "Files not Found";
+						 document.getElementById("botton2").onclick = check; 
+								document.getElementById("botton1").onclick = certify;
+								document.getElementById("botton2").style.opacity = "1"; 
+								document.getElementById("botton1").style.opacity = "1"; 
+								document.getElementById("botton3").onclick = list;
+								
+									document.getElementById("immloader").style.visibility = "hidden";
+						}
+					})
+				}
+				getList()
+			}
+
+		</script>
+		
+	</body>
+	
+</html>
